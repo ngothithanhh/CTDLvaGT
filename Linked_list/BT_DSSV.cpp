@@ -26,9 +26,9 @@ class SV{
         }
 
         void display() {
-        cout << "MaSV: " << maSv << ", Ho ten: " << hoTen 
-            << ", Ngay sinh: " << ngay << "/" << thang << "/" << nam 
-                  << ", Gioi tinh: " << gioiTinh << ", Que quan: " << queQuan << std::endl;
+        cout << "MaSV: " << MaSV << ", Ho ten: " << Hoten 
+            << ", Ngay sinh: " << Ngay << "/" << Thang << "/" << Namsinh 
+                  << ", Gioi tinh: " << Gioitinh << ", Que quan: " << Quequan << std::endl;
     } 
 
-}
+};
