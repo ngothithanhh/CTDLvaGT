@@ -1,8 +1,7 @@
-//Quan li sinh vien bang danh sach lien ket
+//Quan li sinh vien bang vector
 
 #include<bits/stdc++.h>
 #include "vector.cpp"
-#include "list.cpp"
 
 using namespace std;
 
@@ -60,4 +59,4 @@ class DS_SinhVien{
         list<SinhVien> dsList;
 
 
-}
+};
