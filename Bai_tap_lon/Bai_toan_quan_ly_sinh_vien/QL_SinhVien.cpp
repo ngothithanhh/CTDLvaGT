@@ -12,6 +12,7 @@ class SinhVien{
         string gioiTinh;
         int tuoi;
         float diem;
+        string lop;
 
     public:
         SinhVien(){}
@@ -22,16 +23,17 @@ class SinhVien{
             cout << "Nhap gioi tinh: "; is.ignore(); getline(is, sv.gioiTinh);
             cout << "Nhap tuoi: "; is >> sv.tuoi;
             cout << "Nhap diem: "; is >> sv.diem;
+            cout << "Nhap lop: "; is.ignore(); getline(is, sv.lop);
             return is;
         }
 
         friend ostream& operator<<(ostream& os, SinhVien& sv){
-            os << "Ma sinh vien: " << sv.maSV << " Ten: " << sv.ten << " Gioi tinh: " << sv.gioiTinh << " Tuoi: " << sv.tuoi << " Diem: " << sv.diem << "\n";
+            os << "Ma sinh vien: " << sv.maSV << " Ten: " << sv.ten << " Gioi tinh: " << sv.gioiTinh << " Tuoi: " << sv.tuoi << " Diem: " << sv.diem << "Lop: " << sv.lop <<"\n";
             return os; 
         }
 
         bool operator<(SinhVien& other){
-            return this->diem < other.diem;
+            return this->ten < other.ten;
         }
 
         string getTen(){
@@ -50,13 +52,20 @@ class SinhVien{
             return diem;
         }
 
+        string getLop(){
+            return lop;
+        }
+
 };
 
 
 class DS_SinhVien{
     private:
         vector<SinhVien> dsVector;
-        list<SinhVien> dsList;
+
+    public:
+
+        void add
 
 
 };
