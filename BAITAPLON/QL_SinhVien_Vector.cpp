@@ -12,6 +12,7 @@ class SV{
         int namSinh;
         string gioiTinh;
         string lop;
+        float GPA;
 
     public:
         SV(){}
@@ -20,8 +21,9 @@ class SV{
             cout << "Nhap thong tin sinh vien:\n";
             cout << "\tNhap ho va ten: "; is.ignore(); getline(is, sv.hoTen);
             cout << "\tNhap ngay thang nam sinh: "; is >> sv.ngaySinh >> sv.thangSinh >> sv.namSinh;
-            cout << "\tNhap gioi tinh: "; is.ignore(); getline(is, gioiTinh);
+            cout << "\tNhap gioi tinh: "; is.ignore(); getline(is, sv.gioiTinh);
             cout << "\tNhap lop: "; is >> sv.lop;
+            cout << "\tNhap diem tich luy: "; is >>sv.GPA;
             return is;
 
         }
@@ -32,6 +34,7 @@ class SV{
             os << "\tNgay sinh: " << sv.ngaySinh <<" / " << sv.thangSinh << " / " << sv.namSinh << "\n";
             os << "\tGioi tinh: " << sv.gioiTinh << "\n";
             os << "\tLop: " << sv.lop << "\n";
+            os << "\tDiem tich luy: " << sv.GPA << "\n";
             return os;
         }
 
@@ -47,45 +50,167 @@ class SV{
             return hoTen;
         }
 
-
-
+        float getGPA(){
+            return GPA;
+        }
 };
 
 class DS_SV{
     private:
         vector<SV> SinhVien;
 
-    public;
+    public:
+
+        //Nhap danh sach sinh vien
+        void nhapDanhSach() {
+            char tiepTuc = 'c';
+            while (tiepTuc == 'c') {
+                SV sv;
+                cin >> sv;
+                SinhVien.push_back(sv);
+                cout << "Co tiep tuc nhap nua khong? (c/k): ";
+                cin >> tiepTuc;
+            }
+        }
+
+        //Them sinh vien vao danh sach
         void themSinhVien(SV& sv){
             SinhVien.push_back(sv);
         }
 
+        //Hien thi danh sach sinh vien
         void xuatDS(){
             for(auto& sv: SinhVien){
                 cout << sv << "\n";
             }
         }
 
+        //Sap xep danh sach sinh vien theo ho va ten
         void sapxepDS(){
             sort(SinhVien.begin(), SinhVien.end());
         }
 
-        SV timDiemMax(){
+        //Tim GPA cao nhat
+        SV timGPAMax(){
             return *max_element(SinhVien.begin(), SinhVien.end());
         }
 
-        SV timDiemMin(){
-            return *min_element(SinhVien.begin(), SinhVien.end())
+
+        //Tim GPA thap nhat
+        SV timGPAMin(){
+            return *min_element(SinhVien.begin(), SinhVien.end());
         }
 
-        void xoaSV(string& id){
+        //Xoa sinh vien theo ma sinh vien
+        void xoaSV(int& id){
             for(auto it = SinhVien.begin(); it != SinhVien.end(); ++it){
-                
-
+                if(it->getMaSV() == id){
+                    SinhVien.erase(it);
+                    cout << "Da xoa !!!\n";
+                    return;
+                }
             }
+            cout << "Khong tim thay !!\n";
         }
 
 
+        //Sua thong tin sinh vien theo ma sinh vien
+        void suaThongTinSV(int& id){
+            for(auto& sv: SinhVien){
+                if(sv.getMaSV() == id){
+                    cout << "Nhap thong tin moi cho sinh vien:\n";
+                    cin >> sv;
+                    return;
+                }
+            }
+            cout << "Khong tim thay sinh vien nay!!\n";
+        }
+
+        //Tim kiem thong tin sinh vien theo ho ten
+        void timKiemSV(string& name){
+            int check = 0;
+            for(auto& sv : SinhVien){
+                if(sv.getHoTen() == name){
+                    cout << "Thong tin sinh vien co ten " << name <<" la:\n";
+                    cout << sv;
+                    check++;
+                }
+            }
+            if(!check) cout << "Khong tim thay sinh vien co ten: " << name << "\n";
+        }
 };
 
-main(){}
+class APP{
+    private:
+        DS_SV qlySinhVien;
+
+    public:
+        void menu(){
+            int choice;
+            do {
+                cout << "\n===== Menu Quan Ly Sinh Vien =====\n";
+                cout << "1. Nhap danh sach sinh vien\n";
+                cout << "2. Hien thi danh sach sinh vien\n";
+                cout << "3. Xoa sinh vien\n";
+                cout << "4. Sua thong tin sinh vien\n";
+                cout << "5. Sap xep sinh vien theo ho ten\n";
+                cout << "6. Tim kiem sinh vien theo ho ten\n";
+                cout << "0. Thoat\n";
+                cout << "Nhap lua chon: ";
+                cin >> choice;
+
+                switch (choice) {
+                    case 1:
+                        qlySinhVien.nhapDanhSach();
+                        break;
+
+                    case 2:
+                        qlySinhVien.xuatDS();
+                        break;
+
+                    case 3: {
+                        int maSV;
+                        cout << "Nhap ma sinh vien can xoa: ";
+                        cin >> maSV;
+                        qlySinhVien.xoaSV(maSV);
+                        break;
+                    }
+                            
+                    case 4: {
+                        int maSV;
+                        cout << "Nhap ma sinh vien can sua: ";
+                        cin >> maSV;
+                        qlySinhVien.suaThongTinSV(maSV);
+                        break;
+                    }
+
+                    case 5:
+                        qlySinhVien.sapxepDS();
+                        break;
+
+                    case 6: {
+                        string hoTen;
+                        cout << "Nhap ten sinh vien can tim: ";
+                        cin.ignore();
+                        getline(cin, hoTen);
+                        qlySinhVien.timKiemSV(hoTen);
+                        break;
+                    }
+                            
+                    case 0:
+                        cout << "Thoat chuong trinh!!!\n";
+                        break;
+                        
+                    default:
+                        cout << "Lua chon khong hop le!!\n";
+                        break;
+                }
+            } while (choice != 0);
+        }        
+};
+
+main(){
+    APP app;
+    app.menu();
+    return 0;
+}
