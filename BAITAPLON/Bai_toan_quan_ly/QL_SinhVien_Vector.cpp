@@ -138,6 +138,11 @@ class DS_SV{
             }
             if(!check) cout << "Khong tim thay sinh vien co ten: " << name << "\n";
         }
+
+        //Kiem tra danh sach rong?
+        bool ktraDSRong(){
+            return SinhVien.empty();
+        }
 };
 
 class APP{
@@ -164,24 +169,41 @@ class APP{
                         qlySinhVien.nhapDanhSach();
                         break;
 
-                    case 2:
-                        qlySinhVien.xuatDS();
+                    case 2:{
+                        if(qlySinhVien.ktraDSRong()){
+                            cout << "Danh sach sinh vien hien dang rong!!\n";
+                        }
+                        else{
+                            qlySinhVien.xuatDS();
                         break;
 
+                        }
+                    }
+                        
                     case 3: {
-                        int maSV;
-                        cout << "Nhap ma sinh vien can xoa: ";
-                        cin >> maSV;
-                        qlySinhVien.xoaSV(maSV);
-                        break;
+                        if(qlySinhVien.ktraDSRong()){
+                            cout << "Danh sach sinh vien hien dang rong!!\n";
+                        }
+                        else{
+                            int maSV;
+                            cout << "Nhap ma sinh vien can xoa: ";
+                            cin >> maSV;
+                            qlySinhVien.xoaSV(maSV);
+                            break;
+                        }
                     }
                             
                     case 4: {
-                        int maSV;
-                        cout << "Nhap ma sinh vien can sua: ";
-                        cin >> maSV;
-                        qlySinhVien.suaThongTinSV(maSV);
-                        break;
+                        if(qlySinhVien.ktraDSRong()){
+                            cout << "Danh sach sinh vien hien dang rong!!\n";
+                        }
+                        else{
+                            int maSV;
+                            cout << "Nhap ma sinh vien can sua: ";
+                            cin >> maSV;
+                            qlySinhVien.suaThongTinSV(maSV);
+                            break;
+                        }
                     }
 
                     case 5:
@@ -189,12 +211,17 @@ class APP{
                         break;
 
                     case 6: {
-                        string hoTen;
-                        cout << "Nhap ten sinh vien can tim: ";
-                        cin.ignore();
-                        getline(cin, hoTen);
-                        qlySinhVien.timKiemSV(hoTen);
-                        break;
+                        if(qlySinhVien.ktraDSRong()){
+                            cout << "Danh sach sinh vien hien dang rong!!\n";
+                        }
+                        else{
+                            string hoTen;
+                            cout << "Nhap ten sinh vien can tim: ";
+                            cin.ignore();
+                            getline(cin, hoTen);
+                            qlySinhVien.timKiemSV(hoTen);
+                            break;
+                        }
                     }
                             
                     case 0:
