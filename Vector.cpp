@@ -1,179 +1,246 @@
 #include<iostream>
+
 using namespace std;
-#ifndef __vector__cpp__
-#define __vector__cpp__
- 
-template <class T>
-class vector_reverse_iterator{
-	T *curr;	
-	public:
-		vector_reverse_iterator(T *c=0){
-            curr = c;
-        }
 
-		vector_reverse_iterator<T> &operator=(vector_reverse_iterator<T> it){
-			this->curr = it.curr; 
-			return *this;
-		}
+#ifndef __Vector__cpp__
+#define __Vector__cpp__
 
-        //++curr
-		vector_reverse_iterator<T> operator++(){
-			curr--;
-			return curr;
-		}
-        //++curr
-		vector_reverse_iterator<T> operator++(int){
-			vector_reverse_iterator<T> tmp = curr;
-			curr--;
-			return tmp;
-		}
-
-		T &operator*() {
-            return *curr;
-        }
-
-		bool operator!=(vector_reverse_iterator<T> t) {
-            return curr != t.curr;
-        }
-};
- 
-template <class T>
+template <typename T>
 class Vector{
     private:
-        int cap, num;
-        T *v;
+        int num; //So phan tu hien tai co trong vector
+        int cap; //So luong o nho duoc cap phat
+        T *v; //Mang dong
+
     public:
         Vector(){
-            num = cap = 0;
-            v = 0;
+            cap = 0;
+            num = 0;
+            v = new T[1];
         }
 
         Vector(int n, T value){
-            num = cap = n;
-
+            cap = n;
+            num = n;
             v = new T[n];
-
             for(int i = 0; i < n; i++){
                 v[i] = value;
             }
         }
 
         ~Vector(){
-            if(v) delete[] v;
-        }
+        	delete[] v;
+		}
 
-        int capacity(){
-            return cap;
-        }
-
-        int size(){
+        //Lay so luong phan tu hien tai trong mang
+        int getSize(){
             return num;
         }
 
-        bool empty(){
-            return num == 0;
+        //Lay so luong o nho hien tai bo nho duoc cap phat
+        int getCap(){
+            return cap;
         }
 
+        //Xoa phan tu cuoi
         void pop_back(){
-            if(num > 0) num--;
-            else cout <<"Error ! ! !";
+            if(num > 0){
+                num--;
+            }
+            else{
+                cout << "Error !!\n";
+            }
         }
 
         void extend(int newCap){
-
             if(newCap < cap){
                 return;
             }
-
             cap = newCap;
             T *tmp = new T[cap];
-
-            for(int i = 0; i < num; i++){
+            for(int i = 0; i <  num; i++){
                 tmp[i] = v[i];
             }
 
             if(v) delete[] v;
-
             v = tmp;
         }
 
+        //Tra ve phan tu dau tien
+        T &front(){
+            return v[0];
+        }
+
+        //Tra ve phan tu cuoi cung 
         T &back(){
             return v[num-1];
         }
 
-        void push_back(T x){
-            if(num == cap) extend(cap*2 + 1);
-
-            v[num++] = x;
+        //Them phan tu vao cuoi
+        void push_back(T value){
+            if(num == cap){
+                extend(cap*2); //Chien thuat gap doi
+            }
+            v[num] = value;
+            ++num;
         }
 
-        T &operator[] (int k){
-            return v[k];
-        }
-        void insert(int pos, T x){
-            if(num == cap) extend(cap*2 + 1);
-
-            for(int i = num - i; i >= pos; i--){
-                v[i+1] = v[i];
+        //Them phan tu vao vi tri cu the
+        void insert(int pos, T value){
+            if(num == cap){
+                extend(cap*2);
             }
 
-            v[pos] = x;
-            num++;
+            for(int i = num - 1; i >= pos; i--){
+                v[i+1] = v[i]; 
+            }
+
+            v[pos] = value;
+            ++num;
         }
 
-        void replace(int pos, T x){
-            v[pos] = x;
-        }
-
+        //Loai bo phan tu
         void erase(int pos){
-            if(pos < 0 || pos >= size()){
-                cout <<"Error ! ! !";
+            if(pos < 0 || pos >= num){
+                cout <<"Error !!!\n";
             }
-            for(; pos < num; pos++){
-                v[pos] = v[pos+1];
+            else{
+                for(int i = pos; i < num; i++){
+                    v[i] = v[i+1];
+                }
+                num--;
             }
-            num--;
         }
 
-        typedef T *iterator; 
-		iterator begin() {return v;}
-		iterator end() {return v+num;}
-		typedef vector_reverse_iterator<T> reverse_iterator;
-		reverse_iterator rbegin() {return reverse_iterator(v+num-1);} 
-		reverse_iterator rend() {return reverse_iterator(v-1);} 
+        //Truy cap phan tu voi chi so pos
+        T operator[](int pos){
+            return v[pos];
+        }
+
+        // Xoa tat ca
+        void clear() {
+            num = 0;
+        }
+
+        Vector &operator= (Vector<T> v2){
+            num = v2.num;
+            cap = v2.cap;
+            if(cap != 0){
+                v = new T[cap];
+                for(int i = 0; i < num; i++){
+                    v[i] = v2.v[i];
+                }
+            }
+//            else{
+//                v = nullptr;
+//            }
+            return *this;
+        }
+
+        //Bo lap xuoi ITERATOR
+        class iterator{
+            private:
+                T *ptr;
+            public:
+                iterator(T* p){
+                    ptr = p;
+                }
+
+                //Truy cap gia tri cua phan tu
+                T& operator*(){
+                    return *ptr;
+                }
+                
+                //Di chuyen den phan tu tiep theo
+                iterator& operator++(){
+                    ptr++;
+                    return *this;
+                }
+
+                iterator& operator--(){
+                    ptr--;
+                    return *this;
+                }
+
+                 // So sánh hai iterator
+                bool operator!=(const iterator &other) const{
+                    return ptr != other.ptr;
+                }
+
+                bool operator==(const iterator &other) const{
+                    return ptr == other.ptr;
+                }
+        };
+
+
+        //Bo lap nguoc REVERSE_ITERATOR
+        class reverse_iterator{
+            private:
+            T *ptr;
+
+            public:
+            reverse_iterator (T* p){
+                ptr = p;
+            }
+
+            T& operator*(){
+                return *ptr;
+            }
+
+            reverse_iterator& operator++(){
+                ptr--;
+                return *this;
+            }
+
+            reverse_iterator& operator--(){
+                ptr++;
+                return *this;
+            }
+
+            bool operator!=(const reverse_iterator &other) const{
+                return ptr != other.ptr; 
+                }
+
+            bool operator==(const reverse_iterator &other) const {
+                return ptr == other.ptr; 
+            }
+
+        };
+
+        //Cac phuong thuc ho tro iterator va reverse_iterator
+        iterator begin(){ 
+            return iterator(v); 
+        }
+        iterator end(){
+            return iterator(v + num); 
+        }
+        reverse_iterator rbegin(){ 
+            return reverse_iterator(v + num - 1); 
+        }
+        reverse_iterator rend(){ 
+            return reverse_iterator(v - 1); 
+        }
 };
 
 #endif
 
-main(){
-    Vector<int> v(7,6);
-    cout << "Vector ban dau: "; 
-    for(int i = 0; i < v.size(); i++){
-        cout << v[i] <<" ";
-    }
-    cout <<"\n";
+// int main() {
+//     Vector<int> vec(3, 10); 
+//     vec.push_back(20);     
 
-    v.push_back(11);
-    cout << "Vector sau chen: "; 
-    for(int i = 0; i < v.size(); i++){
-        cout << v[i] <<" ";
-    }
-    cout <<"\n";
+   
+//     cout << "Duyet xuoi: ";
+//     for (Vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
+//         cout << *it << " ";
+//     }
+//     cout << endl;
 
-    v.erase(5);
-    cout << "Vector sau xoa: "; 
-    for(int i = 0; i < v.size(); i++){
-        cout << v[i] <<" ";
-    }
-    cout <<"\n";
+    
+//     cout << "Duyet nguoc: ";
+//     for (Vector<int>::reverse_iterator rit = vec.rbegin(); rit != vec.rend(); ++rit) {
+//         cout << *rit << " ";
+//     }
+//     cout << endl;
 
-    v.replace(3, -9);
-    cout << "Vector sau thay the: "; 
-    for(int i = 0; i < v.size(); i++){
-        cout << v[i] <<" ";
-    }
-    cout <<"\n";
-
-    cout <<"Phan tu thu 2 trong vector: " << v[2] <<"\n";
-
-}
+//     return 0;
+// }
