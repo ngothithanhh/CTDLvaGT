@@ -25,9 +25,9 @@ class Trie{
             root = new Node();
         }
 
-        void add(const string& word) {
+        void add(const string& str) {
             Node* node = root;
-            for (char c : word) {
+            for (char c : str) {
                 int index = c - 'a'; // Tinh chi so cua ky tu tu 0 den 25
                 if (node->child[index] == nullptr) {
                     node->child[index] = new Node();
@@ -37,9 +37,9 @@ class Trie{
             }
     }
 
-        int find(const string& prefix) {
+        int find(const string& fin) {
             Node* node = root;
-            for (char c : prefix) {
+            for (char c : fin) {
                 int index = c - 'a';
                 if (node->child[index] == nullptr) {
                     return 0; // Khong tim thay tien to
@@ -50,20 +50,18 @@ class Trie{
         }
 };
 
-int main() {
+main() {
     int n;
-    cin >> n;
+    cin >> n; //Nhap so cau lenh
 
     Trie trie;
     for (int i = 0; i < n; ++i) {
-        string command, word;
-        cin >> command >> word;
+        string command, str;
+        cin >> command >> str; // cu pha: lenh chuoikitu
         if (command == "add") {
-            trie.add(word);
+            trie.add(str);
         } else if (command == "find") {
-            cout << trie.find(word) << endl;
+            cout << trie.find(str) << endl;
         }
     }
-
-    return 0;
 }

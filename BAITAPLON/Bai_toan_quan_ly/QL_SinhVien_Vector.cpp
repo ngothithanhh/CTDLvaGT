@@ -15,7 +15,7 @@ class SV{
         float GPA;
 
     public:
-        SV(){}
+        SV(){};
 
         friend istream& operator>>(istream& is, SV& sv){
             cout << "Nhap thong tin sinh vien:\n";
