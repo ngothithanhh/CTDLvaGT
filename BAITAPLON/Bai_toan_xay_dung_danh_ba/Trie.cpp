@@ -57,7 +57,7 @@ main() {
     Trie trie;
     for (int i = 0; i < n; ++i) {
         string command, str;
-        cin >> command >> str; // cu pha: lenh chuoikitu
+        cin >> command >> str; // cu phap: lenh chuoikitu
         if (command == "add") {
             trie.add(str);
         } else if (command == "find") {
